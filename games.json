@@ -18,6 +18,9 @@
     "repository": "https://github.com/marcsVDev/shipw.git",
     "entry": "src/game.py",
     "requirements": "pygame-ce",
+    "pipOptionsByPlatform": {
+      "win32": ["--only-binary=:all:"]
+    },
     "accent": "#8ab4ff",
     "icon": "02"
   },

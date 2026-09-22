@@ -36,7 +36,9 @@ Edite `games.json`. Cada objeto representa um jogo:
 - `id`: deve ser único e não deve mudar depois que o jogo for instalado.
 - `repository`: endereço HTTPS do GitHub. Deixe vazio enquanto o projeto não estiver pronto.
 - `entry`: caminho do arquivo inicial dentro do repositório.
-- `requirements`: caminho do arquivo de dependências dentro do repositório.
+- `requirements`: caminho do arquivo de dependências dentro do repositório ou nome dos pacotes separados por espaço.
+- `requirementsByPlatform`: dependências específicas para `win32`, `linux` ou `darwin`; substitui `requirements` na plataforma indicada.
+- `pipOptionsByPlatform`: opções extras do `pip` por plataforma. O Cosmonauta usa `--only-binary=:all:` no Windows para baixar um wheel compatível do `pygame-ce` sem tentar compilá-lo.
 - `workdir`: campo opcional caso o jogo precise iniciar em uma subpasta específica.
 
 ## Padrão recomendado para cada projeto

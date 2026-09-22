@@ -8,7 +8,8 @@
     "screenshot": "electron . --screenshot",
     "screenshot:terminal": "electron . --screenshot --terminal-preview",
     "test:install": "electron . --install=echoes-of-life",
-    "check": "node --check src/main.js && node --check src/preload.js && node --check src/renderer.js"
+    "check": "node --check src/main.js && node --check src/dependencies.js && node --check src/preload.js && node --check src/renderer.js",
+    "test": "node --test"
   },
   "devDependencies": {
     "electron": "^38.0.0"

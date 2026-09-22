@@ -2,6 +2,7 @@ const { app, BrowserWindow, ipcMain, shell } = require('electron');
 const path = require('node:path');
 const fs = require('node:fs');
 const { spawn } = require('node:child_process');
+const { installPlan } = require('./dependencies');
 
 let mainWindow;
 const runningGames = new Map();
@@ -185,25 +186,13 @@ async function installGame(game) {
     await runCommand(python.command, [...python.prefixArgs, '-m', module, path.join(directory, '.hub-venv')], { cwd: directory }, (text) => progress(game, text.trim()));
   }
 
-  const requirements = String(game.requirements || 'requirements.txt').trim();
-  const requirementsPath = path.resolve(directory, requirements);
-
-  progress(game, 'Instalando as dependências… Isso pode levar alguns minutos.');
-
-  if (fs.existsSync(requirementsPath) && fs.statSync(requirementsPath).isFile()) {
-    progress(game, `> .hub-venv\\Scripts\\python.exe -m pip install -r ${requirements}`);
+  const plan = installPlan(game, process.platform, directory);
+  if (plan) {
+    progress(game, 'Instalando as dependências… Isso pode levar alguns minutos.');
+    progress(game, `> ${path.relative(directory, pythonInVenv)} ${plan.display}`);
     await runCommand(
       pythonInVenv,
-      ['-m', 'pip', 'install', '-r', requirementsPath],
-      { cwd: directory },
-      (text) => progress(game, text.trim())
-    );
-  } else if (requirements !== 'requirements.txt') {
-    const packages = requirements.split(/\s+/);
-    progress(game, `> .hub-venv\\Scripts\\python.exe -m pip install ${packages.join(' ')}`);
-    await runCommand(
-      pythonInVenv,
-      ['-m', 'pip', 'install', ...packages],
+      plan.args,
       { cwd: directory },
       (text) => progress(game, text.trim())
     );
@@ -296,7 +285,7 @@ function startGame(game) {
   });
 
   runningGames.set(game.id, child);
-  progress(game, `> .hub-venv\\Scripts\\python.exe -X utf8 ${game.entry}`);
+  progress(game, `> ${path.relative(directory, python)} -X utf8 ${game.entry}`);
   progress(game, 'Jogo iniciado.', 'success');
   emit('catalog:changed', readCatalog().map(statusFor));
 

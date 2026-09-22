@@ -1,4 +1,4 @@
-const state = { games: [], query: '', installedOnly: false, logs: [] };
+const state = { games: [], query: '', installedOnly: false, logs: [], openMenuId: null };
 
 const elements = {
   games: document.querySelector('#games'),
@@ -47,15 +47,38 @@ function escapeHtml(value) {
 
 function buttonFor(game) {
   if (!game.configured) return '<button class="primary" disabled>EM BREVE</button>';
-  if (game.busy) return '<button class="primary" disabled><span class="spinner"></span>PREPARANDO</button>';
+  if (game.busy) {
+    const labels = { update: 'ATUALIZANDO', uninstall: 'REMOVENDO' };
+    return `<button class="primary" disabled><span class="spinner"></span>${labels[game.busyAction] || 'PREPARANDO'}</button>`;
+  }
   if (game.running) return `<button class="primary action" data-action="stop" data-id="${escapeHtml(game.id)}">■ ENCERRAR</button>`;
   if (game.installed) return `<button class="primary action" data-action="play" data-id="${escapeHtml(game.id)}">▶ JOGAR</button>`;
   return `<button class="primary action" data-action="install" data-id="${escapeHtml(game.id)}">↓ INSTALAR</button>`;
 }
 
+function menuFor(game) {
+  const id = escapeHtml(game.id);
+  const isOpen = state.openMenuId === game.id;
+  const updateDisabled = game.installed && !game.busy && !game.running ? '' : 'disabled';
+  const uninstallDisabled = game.hasLocalFiles && !game.busy ? '' : 'disabled';
+  return `
+    <div class="card-menu${isOpen ? ' open' : ''}">
+      <button class="secondary menu-trigger" type="button" data-menu-id="${id}" aria-haspopup="menu" aria-expanded="${isOpen}" title="Mais opções">···</button>
+      <div class="action-menu" role="menu" aria-hidden="${!isOpen}">
+        <button class="menu-action action" type="button" role="menuitem" data-action="update" data-id="${id}" ${updateDisabled}>↻ <span>Atualizar</span></button>
+        <button class="menu-action danger action" type="button" role="menuitem" data-action="uninstall" data-id="${id}" ${uninstallDisabled}>× <span>Desinstalar</span></button>
+        <div class="menu-separator"></div>
+        <button class="menu-action action" type="button" role="menuitem" data-action="folder" data-id="${id}">▣ <span>Abrir pasta raiz</span></button>
+      </div>
+    </div>`;
+}
+
 function statusFor(game) {
   if (!game.configured) return ['AGUARDANDO', ''];
-  if (game.busy) return ['INSTALANDO', 'installed'];
+  if (game.busy) {
+    const labels = { update: 'ATUALIZANDO', uninstall: 'REMOVENDO' };
+    return [labels[game.busyAction] || 'INSTALANDO', 'installed'];
+  }
   if (game.running) return ['EM EXECUÇÃO', 'running'];
   if (game.installed) return ['INSTALADO', 'installed'];
   return ['DISPONÍVEL', ''];
@@ -86,7 +109,7 @@ function render() {
         <p class="description">${escapeHtml(game.description)}</p>
         <div class="card-actions">
           ${buttonFor(game)}
-          <button class="secondary action" data-action="folder" data-id="${escapeHtml(game.id)}" title="Abrir pasta">···</button>
+          ${menuFor(game)}
         </div>
       </article>`;
   }).join('');
@@ -112,6 +135,16 @@ async function act(action, id) {
       showToast(`Preparando ${game.name}…`);
       openTerminal();
       await window.hub.install(id);
+    } else if (action === 'update') {
+      showToast(`Atualizando ${game.name}…`);
+      openTerminal();
+      await window.hub.update(id);
+    } else if (action === 'uninstall') {
+      const confirmed = window.confirm(`Desinstalar ${game.name}?\n\nTodos os arquivos locais desse jogo serão removidos.`);
+      if (!confirmed) return;
+      showToast(`Desinstalando ${game.name}…`);
+      openTerminal();
+      await window.hub.uninstall(id);
     } else if (action === 'play') {
       openTerminal();
       await window.hub.play(id);
@@ -143,8 +176,33 @@ function addLog(payload) {
 }
 
 elements.games.addEventListener('click', (event) => {
+  const trigger = event.target.closest('.menu-trigger');
+  if (trigger) {
+    state.openMenuId = state.openMenuId === trigger.dataset.menuId ? null : trigger.dataset.menuId;
+    render();
+    return;
+  }
+
   const button = event.target.closest('.action');
-  if (button) act(button.dataset.action, button.dataset.id);
+  if (button) {
+    state.openMenuId = null;
+    render();
+    act(button.dataset.action, button.dataset.id);
+  }
+});
+
+document.addEventListener('click', (event) => {
+  if (state.openMenuId && !event.target.closest('.card-menu')) {
+    state.openMenuId = null;
+    render();
+  }
+});
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && state.openMenuId) {
+    state.openMenuId = null;
+    render();
+  }
 });
 
 elements.search.addEventListener('input', (event) => { state.query = event.target.value; render(); });

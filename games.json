@@ -11,13 +11,13 @@
     "icon": "E"
   },
   {
-    "id": "projeto-02",
-    "name": "Projeto 02",
-    "authors": "Equipe 02",
+    "id": "proyekt-kosmonavta",
+    "name": "Proyekt Kosmonavta",
+    "authors": "Marcos",
     "description": "Adicione aqui a descrição do segundo jogo da turma.",
-    "repository": "",
-    "entry": "main.py",
-    "requirements": "requirements.txt",
+    "repository": "https://github.com/marcsVDev/shipw.git",
+    "entry": "src/game.py",
+    "requirements": "pygame-ce",
     "accent": "#8ab4ff",
     "icon": "02"
   },

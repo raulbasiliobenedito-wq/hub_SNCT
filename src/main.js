@@ -5,7 +5,7 @@ const { spawn } = require('node:child_process');
 
 let mainWindow;
 const runningGames = new Map();
-const busyGames = new Set();
+const busyGames = new Map();
 
 function catalogPath() {
   return path.join(app.getAppPath(), 'games.json');
@@ -33,10 +33,10 @@ function venvPython(game) {
   const directory = path.join(gameDirectory(game), '.hub-venv');
   const candidates = process.platform === 'win32'
     ? [
-        path.join(directory, 'Scripts', 'python.exe'),
-        path.join(directory, 'bin', 'python.exe'),
-        path.join(directory, 'bin', 'python')
-      ]
+      path.join(directory, 'Scripts', 'python.exe'),
+      path.join(directory, 'bin', 'python.exe'),
+      path.join(directory, 'bin', 'python')
+    ]
     : [path.join(directory, 'bin', 'python3'), path.join(directory, 'bin', 'python')];
   return candidates.find((candidate) => fs.existsSync(candidate)) || candidates[0];
 }
@@ -57,7 +57,9 @@ function statusFor(game) {
   return {
     ...game,
     installed,
+    hasLocalFiles: fs.existsSync(directory),
     busy: busyGames.has(game.id),
+    busyAction: busyGames.get(game.id) || null,
     running: runningGames.has(game.id),
     configured: Boolean(game.repository)
   };
@@ -74,7 +76,7 @@ function progress(game, message, kind = 'info') {
   emit('game:progress', { id: game.id, name: game.name, message, kind });
 }
 
-function runCommand(command, args, options = {}, onOutput = () => {}) {
+function runCommand(command, args, options = {}, onOutput = () => { }) {
   return new Promise((resolve, reject) => {
     const child = spawn(command, args, {
       cwd: options.cwd,
@@ -121,14 +123,14 @@ async function findPython() {
   const bundledPython = path.join(app.getAppPath(), 'runtime', 'python312', 'python.exe');
   const candidates = process.platform === 'win32'
     ? [
-        [bundledPython, []],
-        ['py', ['-3.13']],
-        ['py', ['-3.12']],
-        ['py', ['-3.11']],
-        ['py', ['-3.10']],
-        [path.join(process.env.SystemDrive || 'C:', 'msys64', 'ucrt64', 'bin', 'python.exe'), []],
-        ['python', []]
-      ]
+      [bundledPython, []],
+      ['py', ['-3.13']],
+      ['py', ['-3.12']],
+      ['py', ['-3.11']],
+      ['py', ['-3.10']],
+      [path.join(process.env.SystemDrive || 'C:', 'msys64', 'ucrt64', 'bin', 'python.exe'), []],
+      ['python', []]
+    ]
     : [['python3', []], ['python', []]];
 
   const found = [];
@@ -183,11 +185,28 @@ async function installGame(game) {
     await runCommand(python.command, [...python.prefixArgs, '-m', module, path.join(directory, '.hub-venv')], { cwd: directory }, (text) => progress(game, text.trim()));
   }
 
-  const requirements = path.join(directory, game.requirements || 'requirements.txt');
-  if (fs.existsSync(requirements)) {
-    progress(game, 'Instalando as dependências… Isso pode levar alguns minutos.');
-    progress(game, `> .hub-venv\\Scripts\\python.exe -m pip install -r ${game.requirements || 'requirements.txt'}`);
-    await runCommand(pythonInVenv, ['-m', 'pip', 'install', '-r', requirements], { cwd: directory }, (text) => progress(game, text.trim()));
+  const requirements = String(game.requirements || 'requirements.txt').trim();
+  const requirementsPath = path.resolve(directory, requirements);
+
+  progress(game, 'Instalando as dependências… Isso pode levar alguns minutos.');
+
+  if (fs.existsSync(requirementsPath) && fs.statSync(requirementsPath).isFile()) {
+    progress(game, `> .hub-venv\\Scripts\\python.exe -m pip install -r ${requirements}`);
+    await runCommand(
+      pythonInVenv,
+      ['-m', 'pip', 'install', '-r', requirementsPath],
+      { cwd: directory },
+      (text) => progress(game, text.trim())
+    );
+  } else if (requirements !== 'requirements.txt') {
+    const packages = requirements.split(/\s+/);
+    progress(game, `> .hub-venv\\Scripts\\python.exe -m pip install ${packages.join(' ')}`);
+    await runCommand(
+      pythonInVenv,
+      ['-m', 'pip', 'install', ...packages],
+      { cwd: directory },
+      (text) => progress(game, text.trim())
+    );
   }
 
   await fs.promises.writeFile(
@@ -198,10 +217,59 @@ async function installGame(game) {
   return statusFor(game);
 }
 
-async function withGameLock(id, task) {
+async function updateGame(game) {
+  if (!statusFor(game).installed) throw new Error('Instale o jogo antes de tentar atualizá-lo.');
+  if (runningGames.has(game.id)) throw new Error('Encerre o jogo antes de atualizá-lo.');
+  progress(game, 'Procurando atualizações…');
+  return installGame(game);
+}
+
+async function stopGameAndWait(game) {
+  const child = runningGames.get(game.id);
+  if (!child) return;
+
+  progress(game, 'Encerrando o jogo antes de desinstalar…');
+  await new Promise((resolve, reject) => {
+    if (child.exitCode !== null || child.signalCode !== null) {
+      resolve();
+      return;
+    }
+
+    const timeout = setTimeout(() => {
+      reject(new Error('Não foi possível encerrar o jogo. Feche-o e tente desinstalar novamente.'));
+    }, 5000);
+    const finish = () => {
+      clearTimeout(timeout);
+      resolve();
+    };
+
+    child.once('close', finish);
+    child.once('error', finish);
+    if (!child.kill()) {
+      clearTimeout(timeout);
+      reject(new Error('Não foi possível encerrar o jogo. Feche-o e tente desinstalar novamente.'));
+    }
+  });
+}
+
+async function uninstallGame(game) {
+  const root = path.resolve(gamesRoot());
+  const directory = path.resolve(gameDirectory(game));
+  if (!directory.startsWith(`${root}${path.sep}`)) throw new Error('A pasta deste jogo é inválida.');
+  if (!fs.existsSync(directory)) throw new Error('Este jogo não está instalado.');
+
+  await stopGameAndWait(game);
+  runningGames.delete(game.id);
+  progress(game, 'Removendo os arquivos do jogo…');
+  await fs.promises.rm(directory, { recursive: true, force: true, maxRetries: 3, retryDelay: 200 });
+  progress(game, 'Jogo desinstalado com sucesso.', 'success');
+  return statusFor(game);
+}
+
+async function withGameLock(id, task, action = 'install') {
   const game = getGame(id);
   if (busyGames.has(id)) throw new Error('Este projeto já está sendo preparado.');
-  busyGames.add(id);
+  busyGames.set(id, action);
   emit('catalog:changed', readCatalog().map(statusFor));
   try {
     return await task(game);
@@ -262,11 +330,13 @@ function registerHandlers() {
     try {
       await runCommand('git', ['--version']);
       git = true;
-    } catch {}
+    } catch { }
     const python = await findPython();
     return { git, python: python ? python.version : null, installDirectory: gamesRoot() };
   });
   ipcMain.handle('game:install', (_event, id) => withGameLock(id, installGame));
+  ipcMain.handle('game:update', (_event, id) => withGameLock(id, updateGame, 'update'));
+  ipcMain.handle('game:uninstall', (_event, id) => withGameLock(id, uninstallGame, 'uninstall'));
   ipcMain.handle('game:play', (_event, id) => startGame(getGame(id)));
   ipcMain.handle('game:stop', (_event, id) => stopGame(getGame(id)));
   ipcMain.handle('game:folder', async (_event, id) => {

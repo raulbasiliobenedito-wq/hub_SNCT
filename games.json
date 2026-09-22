@@ -2,13 +2,13 @@
   {
     "id": "echoes-of-life",
     "name": "Echoes of Life",
-    "authors": "Equipe SNCTJOGO",
+    "authors": "Raul",
     "description": "Uma aventura em Pygame por escolas, laboratórios, bibliotecas e cavernas.",
     "repository": "https://github.com/raulbasiliobenedito-wq/SNCTJOGO.git",
     "entry": "jogo/main.py",
     "requirements": "jogo/requirements.txt",
     "accent": "#77e6b6",
-    "icon": "E"
+    "icon": "01"
   },
   {
     "id": "proyekt-kosmonavta",

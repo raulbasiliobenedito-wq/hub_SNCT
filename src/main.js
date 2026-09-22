@@ -221,7 +221,8 @@ function startGame(game) {
 
   const child = spawn(python, ['-X', 'utf8', entry], {
     cwd: game.workdir ? path.join(directory, game.workdir) : directory,
-    windowsHide: true,
+    // Ocultar o processo também pode ocultar a janela SDL/Pygame no Windows.
+    windowsHide: false,
     shell: false,
     env: { ...process.env, PYTHONUTF8: '1', PYTHONUNBUFFERED: '1' }
   });

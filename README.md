@@ -40,6 +40,7 @@ Edite `games.json`. Cada objeto representa um jogo:
 - `requirementsByPlatform`: dependências específicas para `win32`, `linux` ou `darwin`; substitui `requirements` na plataforma indicada.
 - `pipOptionsByPlatform`: opções extras do `pip` por plataforma. O Cosmonauta usa `--only-binary=:all:` no Windows para baixar um wheel compatível do `pygame-ce` sem tentar compilá-lo.
 - `workdir`: campo opcional caso o jogo precise iniciar em uma subpasta específica.
+- `compatibilityPatches`: ajustes pontuais por plataforma aplicados após o clone e restaurados antes de cada atualização. Remova o ajuste do Cosmonauta quando a correção estiver no repositório original.
 
 ## Padrão recomendado para cada projeto
 

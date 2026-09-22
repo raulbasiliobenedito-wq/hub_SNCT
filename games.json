@@ -21,6 +21,13 @@
     "pipOptionsByPlatform": {
       "win32": ["--only-binary=:all:"]
     },
+    "compatibilityPatches": {
+      "win32": [{
+        "file": "src/collision/collidable.py",
+        "from": "def collide_with(self, collider: Collidable) -> bool:",
+        "to": "def collide_with(self, collider: 'Collidable') -> bool:"
+      }]
+    },
     "accent": "#8ab4ff",
     "icon": "02"
   },

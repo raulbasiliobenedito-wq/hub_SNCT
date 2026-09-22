@@ -3,6 +3,7 @@ const path = require('node:path');
 const fs = require('node:fs');
 const { spawn } = require('node:child_process');
 const { installPlan } = require('./dependencies');
+const { applyCompatibilityPatches, restoreCompatibilityPatches } = require('./compatibility');
 
 let mainWindow;
 const runningGames = new Map();
@@ -171,11 +172,21 @@ async function installGame(game) {
   } else {
     progress(game, 'Atualizando o repositório…');
     progress(game, '> git pull --ff-only');
-    await runCommand('git', ['pull', '--ff-only'], { cwd: directory }, (text) => progress(game, text.trim()));
+    await restoreCompatibilityPatches(game, directory, (file) =>
+      runCommand('git', ['show', `HEAD:${file.replace(/\\/g, '/')}`], { cwd: directory })
+    );
+    try {
+      await runCommand('git', ['pull', '--ff-only'], { cwd: directory }, (text) => progress(game, text.trim()));
+    } catch (error) {
+      applyCompatibilityPatches(game, directory);
+      throw error;
+    }
   }
 
   const entry = path.join(directory, game.entry);
   if (!fs.existsSync(entry)) throw new Error(`Arquivo principal não encontrado: ${game.entry}`);
+
+  applyCompatibilityPatches(game, directory);
 
   const pythonInVenv = venvPython(game);
   if (!fs.existsSync(pythonInVenv)) {

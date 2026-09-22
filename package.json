@@ -1,0 +1,16 @@
+{
+  "name": "hub-launcher-turma",
+  "version": "1.0.0",
+  "description": "Launcher dos jogos Pygame da turma",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "screenshot": "electron . --screenshot",
+    "screenshot:terminal": "electron . --screenshot --terminal-preview",
+    "test:install": "electron . --install=echoes-of-life",
+    "check": "node --check src/main.js && node --check src/preload.js && node --check src/renderer.js"
+  },
+  "devDependencies": {
+    "electron": "^38.0.0"
+  }
+}

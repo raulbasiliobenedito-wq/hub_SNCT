@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data:;" />
+    <title>Arcade da Turma</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">A</div>
+          <div><strong>ARCADE</strong><span>DA TURMA</span></div>
+        </div>
+        <nav>
+          <button class="nav-item active" id="all-filter" type="button"><span>▦</span> Biblioteca</button>
+          <button class="nav-item" id="installed-filter" type="button"><span>✓</span> Instalados</button>
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="system-card">
+            <span class="system-title">ESTE COMPUTADOR</span>
+            <div class="system-line"><i id="git-dot"></i><span id="git-status">Verificando Git…</span></div>
+            <div class="system-line"><i id="python-dot"></i><span id="python-status">Verificando Python…</span></div>
+          </div>
+          <button id="open-log" class="log-button" type="button">⌘ Abrir terminal</button>
+        </div>
+      </aside>
+
+      <main>
+        <header>
+          <div>
+            <p class="eyebrow">MOSTRA DE JOGOS 2026</p>
+            <h1>Escolha sua próxima<br /><em>aventura.</em></h1>
+          </div>
+          <div class="header-actions">
+            <label class="search-box"><span>⌕</span><input id="search" type="search" placeholder="Buscar jogo ou equipe" autocomplete="off" /></label>
+            <div class="count-pill"><strong id="game-count">11</strong><span>JOGOS</span></div>
+          </div>
+        </header>
+
+        <section class="toolbar">
+          <div><h2>Biblioteca da turma</h2><p>Instale uma vez. Jogue quando quiser.</p></div>
+          <span class="online"><i></i> CATÁLOGO LOCAL</span>
+        </section>
+        <section id="games" class="game-grid" aria-live="polite"></section>
+        <div id="empty" class="empty" hidden>Nenhum jogo encontrado.</div>
+      </main>
+    </div>
+
+    <div id="toast" class="toast" role="status"></div>
+    <aside id="log-panel" class="log-panel" aria-hidden="true">
+      <div class="log-header">
+        <div class="terminal-heading">
+          <div class="terminal-lights"><i></i><i></i><i></i></div>
+          <div><span>TERMINAL DO LAUNCHER</span><strong id="log-title">Aguardando comando</strong></div>
+        </div>
+        <div class="terminal-actions">
+          <button id="clear-log" class="clear-log" type="button">LIMPAR</button>
+          <button id="close-log" class="close-log" type="button" aria-label="Fechar">×</button>
+        </div>
+      </div>
+      <div id="terminal-state" class="terminal-state"><i></i><span>PRONTO</span></div>
+      <pre id="log-output"><span class="prompt">C:\HUB&gt;</span> Aguardando instalação ou execução...</pre>
+    </aside>
+    <script src="renderer.js"></script>
+  </body>
+</html>

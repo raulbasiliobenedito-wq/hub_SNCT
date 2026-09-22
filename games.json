@@ -1,0 +1,123 @@
+[
+  {
+    "id": "echoes-of-life",
+    "name": "Echoes of Life",
+    "authors": "Equipe SNCTJOGO",
+    "description": "Uma aventura em Pygame por escolas, laboratórios, bibliotecas e cavernas.",
+    "repository": "https://github.com/raulbasiliobenedito-wq/SNCTJOGO.git",
+    "entry": "jogo/main.py",
+    "requirements": "jogo/requirements.txt",
+    "accent": "#77e6b6",
+    "icon": "E"
+  },
+  {
+    "id": "projeto-02",
+    "name": "Projeto 02",
+    "authors": "Equipe 02",
+    "description": "Adicione aqui a descrição do segundo jogo da turma.",
+    "repository": "",
+    "entry": "main.py",
+    "requirements": "requirements.txt",
+    "accent": "#8ab4ff",
+    "icon": "02"
+  },
+  {
+    "id": "projeto-03",
+    "name": "Projeto 03",
+    "authors": "Equipe 03",
+    "description": "Adicione aqui a descrição do terceiro jogo da turma.",
+    "repository": "",
+    "entry": "main.py",
+    "requirements": "requirements.txt",
+    "accent": "#ffca70",
+    "icon": "03"
+  },
+  {
+    "id": "projeto-04",
+    "name": "Projeto 04",
+    "authors": "Equipe 04",
+    "description": "Adicione aqui a descrição do quarto jogo da turma.",
+    "repository": "",
+    "entry": "main.py",
+    "requirements": "requirements.txt",
+    "accent": "#ff8a9b",
+    "icon": "04"
+  },
+  {
+    "id": "projeto-05",
+    "name": "Projeto 05",
+    "authors": "Equipe 05",
+    "description": "Adicione aqui a descrição do quinto jogo da turma.",
+    "repository": "",
+    "entry": "main.py",
+    "requirements": "requirements.txt",
+    "accent": "#c29cff",
+    "icon": "05"
+  },
+  {
+    "id": "projeto-06",
+    "name": "Projeto 06",
+    "authors": "Equipe 06",
+    "description": "Adicione aqui a descrição do sexto jogo da turma.",
+    "repository": "",
+    "entry": "main.py",
+    "requirements": "requirements.txt",
+    "accent": "#72d9ff",
+    "icon": "06"
+  },
+  {
+    "id": "projeto-07",
+    "name": "Projeto 07",
+    "authors": "Equipe 07",
+    "description": "Adicione aqui a descrição do sétimo jogo da turma.",
+    "repository": "",
+    "entry": "main.py",
+    "requirements": "requirements.txt",
+    "accent": "#f28cff",
+    "icon": "07"
+  },
+  {
+    "id": "projeto-08",
+    "name": "Projeto 08",
+    "authors": "Equipe 08",
+    "description": "Adicione aqui a descrição do oitavo jogo da turma.",
+    "repository": "",
+    "entry": "main.py",
+    "requirements": "requirements.txt",
+    "accent": "#9fe870",
+    "icon": "08"
+  },
+  {
+    "id": "projeto-09",
+    "name": "Projeto 09",
+    "authors": "Equipe 09",
+    "description": "Adicione aqui a descrição do nono jogo da turma.",
+    "repository": "",
+    "entry": "main.py",
+    "requirements": "requirements.txt",
+    "accent": "#ff9f68",
+    "icon": "09"
+  },
+  {
+    "id": "projeto-10",
+    "name": "Projeto 10",
+    "authors": "Equipe 10",
+    "description": "Adicione aqui a descrição do décimo jogo da turma.",
+    "repository": "",
+    "entry": "main.py",
+    "requirements": "requirements.txt",
+    "accent": "#68e0cf",
+    "icon": "10"
+  },
+  {
+    "id": "projeto-11",
+    "name": "Projeto 11",
+    "authors": "Equipe 11",
+    "description": "Adicione aqui a descrição do décimo primeiro jogo da turma.",
+    "repository": "",
+    "entry": "main.py",
+    "requirements": "requirements.txt",
+    "accent": "#ffd166",
+    "icon": "11"
+  }
+]

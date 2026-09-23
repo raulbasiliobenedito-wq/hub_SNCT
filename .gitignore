@@ -1,4 +1,5 @@
 node_modules/
 dist/
+executaveis/linux-unpacked
+executaveis/win-unpacked
 *.log
-

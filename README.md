@@ -6,6 +6,10 @@ Aplicativo desktop em Electron para reunir, instalar e executar os 11 jogos Pyga
 
 No Windows, clique duas vezes em `INICIAR_HUB.bat`.
 
+Para usar os executáveis compilados, abra `executaveis/Arcade-da-Turma-Windows-1.0.0.exe` no Windows ou execute `executaveis/Arcade-da-Turma-Linux-1.0.0.AppImage` no Linux. O `.exe` inclui o Python 3.12 portátil. No Linux, instale Python 3.10 ou mais recente. O Git precisa estar disponível nas duas plataformas para instalar os jogos.
+
+Para gerar os dois pacotes novamente, execute `npm install` e `npm run build`. Também existem `npm run build:win` e `npm run build:linux` para gerar cada plataforma separadamente.
+
 Como alternativa, use o PowerShell dentro desta pasta:
 
 ```powershell

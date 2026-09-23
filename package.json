@@ -8,10 +8,42 @@
     "screenshot": "electron . --screenshot",
     "screenshot:terminal": "electron . --screenshot --terminal-preview",
     "test:install": "electron . --install=echoes-of-life",
+    "build": "electron-builder --linux AppImage --win portable",
+    "build:linux": "electron-builder --linux AppImage",
+    "build:win": "electron-builder --win portable",
     "check": "node --check src/main.js && node --check src/compatibility.js && node --check src/dependencies.js && node --check src/preload.js && node --check src/renderer.js",
     "test": "node --test"
   },
   "devDependencies": {
-    "electron": "^38.0.0"
+    "electron": "^38.0.0",
+    "electron-builder": "^26.0.0"
+  },
+  "build": {
+    "appId": "br.edu.snct.arcadedaturma",
+    "productName": "Arcade da Turma",
+    "directories": {
+      "output": "executaveis"
+    },
+    "files": [
+      "src/**/*",
+      "games.json",
+      "package.json"
+    ],
+    "win": {
+      "target": "portable",
+      "artifactName": "Arcade-da-Turma-Windows-${version}.${ext}",
+      "extraResources": [
+        {
+          "from": "runtime/python312",
+          "to": "runtime/python312",
+          "filter": ["**/*"]
+        }
+      ]
+    },
+    "linux": {
+      "target": "AppImage",
+      "category": "Game",
+      "artifactName": "Arcade-da-Turma-Linux-${version}.${ext}"
+    }
   }
 }

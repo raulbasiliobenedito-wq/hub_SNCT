@@ -13,6 +13,11 @@ function catalogPath() {
   return path.join(app.getAppPath(), 'games.json');
 }
 
+function bundledPythonPath() {
+  const root = app.isPackaged ? process.resourcesPath : app.getAppPath();
+  return path.join(root, 'runtime', 'python312', 'python.exe');
+}
+
 function gamesRoot() {
   return path.join(app.getPath('userData'), 'games');
 }
@@ -122,7 +127,7 @@ async function inspectPython(command, prefixArgs = []) {
 }
 
 async function findPython() {
-  const bundledPython = path.join(app.getAppPath(), 'runtime', 'python312', 'python.exe');
+  const bundledPython = bundledPythonPath();
   const candidates = process.platform === 'win32'
     ? [
       [bundledPython, []],
@@ -191,7 +196,7 @@ async function installGame(game) {
   const pythonInVenv = venvPython(game);
   if (!fs.existsSync(pythonInVenv)) {
     progress(game, 'Criando ambiente virtual isolado…');
-    const bundledPython = path.join(app.getAppPath(), 'runtime', 'python312', 'python.exe');
+    const bundledPython = bundledPythonPath();
     const module = path.resolve(python.command) === path.resolve(bundledPython) ? 'virtualenv' : 'venv';
     progress(game, `> python -m ${module} .hub-venv`);
     await runCommand(python.command, [...python.prefixArgs, '-m', module, path.join(directory, '.hub-venv')], { cwd: directory }, (text) => progress(game, text.trim()));

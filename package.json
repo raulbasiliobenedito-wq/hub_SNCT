@@ -15,7 +15,7 @@
     "test": "node --test"
   },
   "devDependencies": {
-    "electron": "^38.0.0",
+    "electron": "^44.4.5",
     "electron-builder": "^26.0.0"
   },
   "build": {
@@ -36,7 +36,9 @@
         {
           "from": "runtime/python312",
           "to": "runtime/python312",
-          "filter": ["**/*"]
+          "filter": [
+            "**/*"
+          ]
         }
       ]
     },

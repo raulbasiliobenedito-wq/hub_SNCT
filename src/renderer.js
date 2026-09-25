@@ -133,23 +133,18 @@ async function act(action, id) {
   try {
     if (action === 'install') {
       showToast(`Preparando ${game.name}…`);
-      openTerminal();
       await window.hub.install(id);
     } else if (action === 'update') {
       showToast(`Atualizando ${game.name}…`);
-      openTerminal();
       await window.hub.update(id);
     } else if (action === 'uninstall') {
       const confirmed = window.confirm(`Desinstalar ${game.name}?\n\nTodos os arquivos locais desse jogo serão removidos.`);
       if (!confirmed) return;
       showToast(`Desinstalando ${game.name}…`);
-      openTerminal();
       await window.hub.uninstall(id);
     } else if (action === 'play') {
-      openTerminal();
       await window.hub.play(id);
     } else if (action === 'stop') {
-      openTerminal();
       await window.hub.stop(id);
     } else if (action === 'folder') {
       await window.hub.openFolder(id);

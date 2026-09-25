@@ -8,13 +8,13 @@
     "entry": "jogo/main.py",
     "requirements": "jogo/requirements.txt",
     "accent": "#77e6b6",
-    "icon": "01"
+    "icon": "EF"
   },
   {
     "id": "proyekt-kosmonavta",
     "name": "Proyekt Kosmonavta",
     "authors": "Marcos",
-    "description": "Adicione aqui a descrição do segundo jogo da turma.",
+    "description": "Um shooter arcade inspirado em *Space Invaders* acompanha Valentina Tereshkova em uma missão soviética suicida até Marte.",
     "repository": "https://github.com/marcsVDev/shipw.git",
     "entry": "src/game.py",
     "requirements": "pygame-ce",
@@ -29,73 +29,84 @@
       }]
     },
     "accent": "#8ab4ff",
-    "icon": "02"
+    "icon": "PK"
   },
   {
     "id": "cleopatra",
     "name": "A Caçadora da Tumba da Cleópatra",
     "authors": "Lara",
-    "description": "Adicione aqui a descrição do terceiro jogo da turma.",
+    "description": "",
     "repository": "https://github.com/laranunes-afk/joguinho-SNCT",
     "entry": "jogo/main.py",
     "requirements": "pygame-ce",
     "accent": "#ffca70",
-    "icon": "03"
+    "icon": "CT"
   },
   {
     "id": "revotale",
     "name": "Revotale",
     "authors": "Felipe",
-    "description": "Adicione aqui a descrição do quarto jogo da turma.",
+    "description": "",
     "repository": "https://github.com/Franginforadaagua/Revotale",
     "entry": "main.py",
     "requirements": "pygame-ce",
     "accent": "#ff8a9b",
-    "icon": "04"
+    "icon": "R"
   },
   {
     "id": "sobanalise",
     "name": "Sobanalise",
     "authors": "Caua",
-    "description": "Adicione aqui a descrição do quinto jogo da turma.",
+    "description": "**Sob Análise** é um jogo 2D em que o jogador avalia decisões de uma IA, explorando temas como viés algorítmico, privacidad...",
     "repository": "https://github.com/cauaawdasdwasd/projeto-snct-2026",
     "entry": "main.py",
     "requirements": "requirements.txt",
     "accent": "#c29cff",
-    "icon": "05"
+    "icon": "SB"
   },
   {
     "id": "sangueteria",
     "name": "Sangueteria",
     "authors": "Taynara",
-    "description": "Adicione aqui a descrição do sexto jogo da turma.",
+    "description": "Laboratorio de doces! Prepare, misture, asse e decore",
     "repository": "https://github.com/reisaparecida-blip/Sangueteria-sntc",
     "entry": "main.py",
     "requirements": "pygame-ce",
     "accent": "#72d9ff",
-    "icon": "06"
+    "icon": "S"
   },
   {
     "id": "ciencia",
     "name": "Ciencia",
     "authors": "Francisco",
-    "description": "Adicione aqui a descrição do sétimo jogo da turma.",
+    "description": "Marie Curie superou preconceitos e dificuldades, fez descobertas essenciais sobre a radioatividade.",
     "repository": "https://github.com/Xisto-o/Ciencia",
     "entry": "game/testes.py",
     "requirements": "pygame-ce",
     "accent": "#f28cff",
-    "icon": "07"
+    "icon": "C"
   },
   {
     "id": "turno-noturno",
     "name": "Turno Noturno",
     "authors": "Maick",
-    "description": "Adicione aqui a descrição do oitavo jogo da turma.",
+    "description": "Em 1996, Marina investiga falhas misteriosas no sistema VIGIA enquanto mantém dois pacientes estáveis e decide entre contestar ou validar o relatório automático.",
     "repository": "https://github.com/HudotoX/Jogo_TurnoNoturno",
     "entry": "turno-noturno-v11.4/main.py",
     "requirements": "turno-noturno-v11.4/requirements.txt",
     "accent": "#9fe870",
-    "icon": "08"
+    "icon": "TN"
+  },
+  {
+    "id": "myosotis-convallaria",
+    "name": "Myosotis Convallaria",
+    "authors": "Equipe 10",
+    "description": "A experiência acompanha Diana em três momentos de sua vida e dura cerca de 6 a 10 minutos.",
+    "repository": "https://github.com/Emma-XP/Reposit-rio-Rocket",
+    "entry": "myosotis-convallaria-codigofonte/jogo.py",
+    "requirements": "pygame-ce",
+    "accent": "#68e0cf",
+    "icon": "MC"
   },
   {
     "id": "projeto-09",
@@ -107,18 +118,7 @@
     "requirements": "requirements.txt",
     "accent": "#ff9f68",
     "icon": "09"
-  },
-  {
-    "id": "projeto-10",
-    "name": "Projeto 10",
-    "authors": "Equipe 10",
-    "description": "Adicione aqui a descrição do décimo jogo da turma.",
-    "repository": "",
-    "entry": "main.py",
-    "requirements": "requirements.txt",
-    "accent": "#68e0cf",
-    "icon": "10"
-  },
+  },  
   {
     "id": "projeto-11",
     "name": "Projeto 11",

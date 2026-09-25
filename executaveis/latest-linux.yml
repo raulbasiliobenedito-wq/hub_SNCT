@@ -1,0 +1,9 @@
+version: 1.0.0
+files:
+  - url: Arcade-da-Turma-Linux-1.0.0.AppImage
+    sha512: tp+nbXEkQnV2zeUzqaE3yamt5IY3cbGC4xU9BXhUlOeMk5CIzaQvMr05fvexrqnuvYadpPcfC7vNUJ+/r/PAEA==
+    size: 116528033
+    blockMapSize: 123829
+path: Arcade-da-Turma-Linux-1.0.0.AppImage
+sha512: tp+nbXEkQnV2zeUzqaE3yamt5IY3cbGC4xU9BXhUlOeMk5CIzaQvMr05fvexrqnuvYadpPcfC7vNUJ+/r/PAEA==
+releaseDate: '2026-09-23T00:10:29.340Z'
